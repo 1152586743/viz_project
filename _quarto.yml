@@ -5,11 +5,11 @@ website:
   title: "Visualization Project"
   navbar:
     left:
-      - href: main.ipynb
-        text: Main
-      - href: https://github.com/anly501/dsan-5000-project-1152586743
-        text: Code
-      
+      - text: Main
+        href: main.ipynb
+      - text: Code
+        href: https://github.com/1152586743/viz_project
+
 output-dir: docs
 
 format:
