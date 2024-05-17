@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Visualization Project - Hello world</title>
+<title>Visualization Project - Impact of Climate Change on Tree Canopy Coverage in Southeastern Utah National Parks</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -59,6 +93,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 </head>
@@ -107,7 +144,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Hello world</h1>
+<h1 class="title">Impact of Climate Change on Tree Canopy Coverage in Southeastern Utah National Parks</h1>
 </div>
 
 
@@ -122,6 +159,868 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'Data/NABR_historic.csv'</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">long</th>
+<th data-quarto-table-cell-role="th">lat</th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">TimePeriod</th>
+<th data-quarto-table-cell-role="th">RCP</th>
+<th data-quarto-table-cell-role="th">scenario</th>
+<th data-quarto-table-cell-role="th">treecanopy</th>
+<th data-quarto-table-cell-role="th">Ann_Herb</th>
+<th data-quarto-table-cell-role="th">Bare</th>
+<th data-quarto-table-cell-role="th">Herb</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">PPT_Annual</th>
+<th data-quarto-table-cell-role="th">T_Winter</th>
+<th data-quarto-table-cell-role="th">T_Summer</th>
+<th data-quarto-table-cell-role="th">T_Annual</th>
+<th data-quarto-table-cell-role="th">Tmax_Summer</th>
+<th data-quarto-table-cell-role="th">Tmin_Winter</th>
+<th data-quarto-table-cell-role="th">VWC_Winter_whole</th>
+<th data-quarto-table-cell-role="th">VWC_Spring_whole</th>
+<th data-quarto-table-cell-role="th">VWC_Summer_whole</th>
+<th data-quarto-table-cell-role="th">VWC_Fall_whole</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>-110.0472</td>
+<td>37.60413</td>
+<td>1980</td>
+<td>Hist</td>
+<td>historical</td>
+<td>sc1</td>
+<td>0</td>
+<td>0</td>
+<td>84</td>
+<td>5</td>
+<td>...</td>
+<td>13.79</td>
+<td>0.964835</td>
+<td>23.15924</td>
+<td>23.159240</td>
+<td>37.05</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>-110.0472</td>
+<td>37.60413</td>
+<td>1980</td>
+<td>Hist</td>
+<td>historical</td>
+<td>sc1</td>
+<td>0</td>
+<td>0</td>
+<td>84</td>
+<td>5</td>
+<td>...</td>
+<td>2.69</td>
+<td>0.964835</td>
+<td>23.15924</td>
+<td>0.964835</td>
+<td>37.05</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>-110.0472</td>
+<td>37.60413</td>
+<td>1980</td>
+<td>Hist</td>
+<td>historical</td>
+<td>sc1</td>
+<td>0</td>
+<td>0</td>
+<td>84</td>
+<td>5</td>
+<td>...</td>
+<td>13.79</td>
+<td>0.964835</td>
+<td>23.15924</td>
+<td>0.964835</td>
+<td>37.05</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>-110.0472</td>
+<td>37.60413</td>
+<td>1980</td>
+<td>Hist</td>
+<td>historical</td>
+<td>sc1</td>
+<td>0</td>
+<td>0</td>
+<td>84</td>
+<td>5</td>
+<td>...</td>
+<td>2.69</td>
+<td>0.964835</td>
+<td>23.15924</td>
+<td>23.159240</td>
+<td>37.05</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>-110.0472</td>
+<td>37.60413</td>
+<td>1980</td>
+<td>Hist</td>
+<td>historical</td>
+<td>sc1</td>
+<td>0</td>
+<td>0</td>
+<td>84</td>
+<td>5</td>
+<td>...</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>-12.45</td>
+<td>0.113447</td>
+<td>0.096831</td>
+<td>0.041876</td>
+<td>0.052298</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 29 columns</p>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> pd.read_csv(<span class="st">'Data/nearterm_data_2020-2024.csv'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df2.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">long</th>
+<th data-quarto-table-cell-role="th">lat</th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">TimePeriod</th>
+<th data-quarto-table-cell-role="th">RCP</th>
+<th data-quarto-table-cell-role="th">scenario</th>
+<th data-quarto-table-cell-role="th">treecanopy</th>
+<th data-quarto-table-cell-role="th">Ann_Herb</th>
+<th data-quarto-table-cell-role="th">Bare</th>
+<th data-quarto-table-cell-role="th">Herb</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">PPT_Annual</th>
+<th data-quarto-table-cell-role="th">T_Winter</th>
+<th data-quarto-table-cell-role="th">T_Summer</th>
+<th data-quarto-table-cell-role="th">T_Annual</th>
+<th data-quarto-table-cell-role="th">Tmax_Summer</th>
+<th data-quarto-table-cell-role="th">Tmin_Winter</th>
+<th data-quarto-table-cell-role="th">VWC_Winter_whole</th>
+<th data-quarto-table-cell-role="th">VWC_Spring_whole</th>
+<th data-quarto-table-cell-role="th">VWC_Summer_whole</th>
+<th data-quarto-table-cell-role="th">VWC_Fall_whole</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>-110.0472</td>
+<td>37.60413</td>
+<td>2021</td>
+<td>NT</td>
+<td>4.5</td>
+<td>sc22</td>
+<td>0</td>
+<td>0</td>
+<td>84</td>
+<td>5</td>
+<td>...</td>
+<td>6.37</td>
+<td>1.630333</td>
+<td>24.50402</td>
+<td>24.50402</td>
+<td>36.89</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>-110.0472</td>
+<td>37.60413</td>
+<td>2021</td>
+<td>NT</td>
+<td>4.5</td>
+<td>sc22</td>
+<td>0</td>
+<td>0</td>
+<td>84</td>
+<td>5</td>
+<td>...</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>-12.77</td>
+<td>0.114652</td>
+<td>0.078764</td>
+<td>0.043514</td>
+<td>0.051281</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>-110.0472</td>
+<td>37.60413</td>
+<td>2021</td>
+<td>NT</td>
+<td>4.5</td>
+<td>sc23</td>
+<td>0</td>
+<td>0</td>
+<td>84</td>
+<td>5</td>
+<td>...</td>
+<td>3.09</td>
+<td>1.389056</td>
+<td>24.11043</td>
+<td>24.11043</td>
+<td>37.95</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>-110.0472</td>
+<td>37.60413</td>
+<td>2021</td>
+<td>NT</td>
+<td>4.5</td>
+<td>sc23</td>
+<td>0</td>
+<td>0</td>
+<td>84</td>
+<td>5</td>
+<td>...</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>-18.96</td>
+<td>0.130221</td>
+<td>0.096412</td>
+<td>0.041232</td>
+<td>0.092241</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>-110.0472</td>
+<td>37.60413</td>
+<td>2021</td>
+<td>NT</td>
+<td>4.5</td>
+<td>sc24</td>
+<td>0</td>
+<td>0</td>
+<td>84</td>
+<td>5</td>
+<td>...</td>
+<td>6.87</td>
+<td>-0.334389</td>
+<td>25.54266</td>
+<td>10.31321</td>
+<td>37.74</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 29 columns</p>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>merged_df <span class="op">=</span> pd.concat([df, df2], ignore_index<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>merged_df <span class="op">=</span> merged_df.loc[:, <span class="op">~</span>merged_df.columns.duplicated()]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>merged_df.dropna(how<span class="op">=</span><span class="st">'all'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for missing values for each column</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>missing_values_per_column <span class="op">=</span> merged_df.isnull().<span class="bu">sum</span>()</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the number of missing values for each column</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Number of missing values for each column:"</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(missing_values_per_column)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Number of missing values for each column:
+long                                          0
+lat                                           0
+year                                          0
+TimePeriod                                    0
+RCP                                           0
+scenario                                      0
+treecanopy                                    0
+Ann_Herb                                      0
+Bare                                          0
+Herb                                          0
+Litter                                        0
+Shrub                                         0
+DrySoilDays_Summer_whole                  46874
+Evap_Summer                               46874
+ExtremeShortTermDryStress_Summer_whole    46880
+FrostDays_Winter                          46874
+NonDrySWA_Summer_whole                    46998
+PPT_Winter                                22288
+PPT_Summer                                22288
+PPT_Annual                                29693
+T_Winter                                  22288
+T_Summer                                  22288
+T_Annual                                  29693
+Tmax_Summer                               22288
+Tmin_Winter                               46874
+VWC_Winter_whole                          46874
+VWC_Spring_whole                          46874
+VWC_Summer_whole                          46874
+VWC_Fall_whole                            46874
+dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define columns to check for duplicates</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>columns_to_check <span class="op">=</span> [<span class="st">'long'</span>, <span class="st">'lat'</span>, <span class="st">'year'</span>, <span class="st">'TimePeriod'</span>, <span class="st">'RCP'</span>, <span class="st">'scenario'</span>]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Find duplicates</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>duplicates <span class="op">=</span> merged_df[merged_df.duplicated(subset<span class="op">=</span>columns_to_check, keep<span class="op">=</span><span class="va">False</span>)]</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Display duplicates</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Duplicate rows based on the columns:"</span>, columns_to_check)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(duplicates)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Display unique rows for specific columns</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Unique rows count for each column with duplicates:"</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> merged_df.columns:</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>duplicates[col]<span class="sc">.</span>nunique()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Save duplicates to CSV for further analysis if needed</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>duplicates.to_csv(<span class="st">'Data/duplicates.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Duplicate rows based on the columns: ['long', 'lat', 'year', 'TimePeriod', 'RCP', 'scenario']
+           long       lat  year TimePeriod         RCP scenario  treecanopy  \
+0     -110.0472  37.60413  1980       Hist  historical      sc1           0   
+1     -110.0472  37.60413  1980       Hist  historical      sc1           0   
+2     -110.0472  37.60413  1980       Hist  historical      sc1           0   
+3     -110.0472  37.60413  1980       Hist  historical      sc1           0   
+4     -110.0472  37.60413  1980       Hist  historical      sc1           0   
+...         ...       ...   ...        ...         ...      ...         ...   
+69618 -109.9659  37.62525  2024         NT         8.5     sc57          18   
+69619 -109.9659  37.62525  2024         NT         8.5     sc58          18   
+69620 -109.9659  37.62525  2024         NT         8.5     sc59          18   
+69621 -109.9659  37.62525  2024         NT         8.5     sc60          18   
+69622 -109.9659  37.62525  2024         NT         8.5     sc61          18   
+
+       Ann_Herb  Bare  Herb  ...  PPT_Annual  T_Winter  T_Summer   T_Annual  \
+0             0    84     5  ...       13.79  0.964835  23.15924  23.159240   
+1             0    84     5  ...        2.69  0.964835  23.15924   0.964835   
+2             0    84     5  ...       13.79  0.964835  23.15924   0.964835   
+3             0    84     5  ...        2.69  0.964835  23.15924  23.159240   
+4             0    84     5  ...         NaN       NaN       NaN        NaN   
+...         ...   ...   ...  ...         ...       ...       ...        ...   
+69618         0    37    18  ...         NaN       NaN       NaN        NaN   
+69619         0    37    18  ...         NaN       NaN       NaN        NaN   
+69620         0    37    18  ...         NaN       NaN       NaN        NaN   
+69621         0    37    18  ...         NaN       NaN       NaN        NaN   
+69622         0    37    18  ...         NaN       NaN       NaN        NaN   
+
+       Tmax_Summer  Tmin_Winter  VWC_Winter_whole  VWC_Spring_whole  \
+0            37.05          NaN               NaN               NaN   
+1            37.05          NaN               NaN               NaN   
+2            37.05          NaN               NaN               NaN   
+3            37.05          NaN               NaN               NaN   
+4              NaN       -12.45          0.113447          0.096831   
+...            ...          ...               ...               ...   
+69618          NaN       -12.16          0.142255          0.173792   
+69619          NaN       -12.16          0.166254          0.158146   
+69620          NaN       -10.38          0.151342          0.175814   
+69621          NaN       -10.61          0.122249          0.104884   
+69622          NaN        -7.56          0.139110          0.116699   
+
+       VWC_Summer_whole  VWC_Fall_whole  
+0                   NaN             NaN  
+1                   NaN             NaN  
+2                   NaN             NaN  
+3                   NaN             NaN  
+4              0.041876        0.052298  
+...                 ...             ...  
+69618          0.091433        0.106907  
+69619          0.086355        0.095905  
+69620          0.091992        0.109333  
+69621          0.087115        0.118908  
+69622          0.084664        0.111973  
+
+[69485 rows x 29 columns]
+
+Unique rows count for each column with duplicates:
+long: 92
+lat: 90
+year: 43
+TimePeriod: 2
+RCP: 3
+scenario: 41
+treecanopy: 25
+Ann_Herb: 3
+Bare: 56
+Herb: 19
+Litter: 24
+Shrub: 34
+DrySoilDays_Summer_whole: 93
+Evap_Summer: 22295
+ExtremeShortTermDryStress_Summer_whole: 1490
+FrostDays_Winter: 48
+NonDrySWA_Summer_whole: 22069
+PPT_Winter: 783
+PPT_Summer: 798
+PPT_Annual: 1396
+T_Winter: 1152
+T_Summer: 1152
+T_Annual: 3897
+Tmax_Summer: 527
+Tmin_Winter: 756
+VWC_Winter_whole: 22214
+VWC_Spring_whole: 22267
+VWC_Summer_whole: 22311
+VWC_Fall_whole: 22251</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the cleaned merged dataframe to a new CSV file</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>merged_df.to_csv(<span class="st">'Data/merged_cleaned_data.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.graph_objects <span class="im">as</span> go</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>years_to_remove <span class="op">=</span> [<span class="dv">2021</span>, <span class="dv">2022</span>, <span class="dv">2023</span>, <span class="dv">2024</span>]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="op">=</span> merged_df[<span class="op">~</span>merged_df[<span class="st">'year'</span>].isin(years_to_remove)]</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># For each year, at each unique longitude and latitude, keep the row with the highest treecanopy value</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>max_treecanopy_df <span class="op">=</span> filtered_df.loc[filtered_df.groupby([<span class="st">'year'</span>, <span class="st">'long'</span>, <span class="st">'lat'</span>])[<span class="st">'treecanopy'</span>].idxmax()]</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>unique_years <span class="op">=</span> max_treecanopy_df[<span class="st">'year'</span>].unique()</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dropdown menu with the years</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>buttons <span class="op">=</span> []</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> year <span class="kw">in</span> unique_years:</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    filtered_df <span class="op">=</span> merged_df[merged_df[<span class="st">'year'</span>] <span class="op">==</span> year]</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    buttons.append(</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">dict</span>(</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>            method<span class="op">=</span><span class="st">'update'</span>,</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>            label<span class="op">=</span><span class="bu">str</span>(year),</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>            args<span class="op">=</span>[{<span class="st">'lat'</span>: [filtered_df[<span class="st">'lat'</span>]], </span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'lon'</span>: [filtered_df[<span class="st">'long'</span>]], </span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'marker.color'</span>: [filtered_df[<span class="st">'treecanopy'</span>]], </span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'text'</span>: [filtered_df[<span class="st">'treecanopy'</span>]]}]</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the initial scatter map plot for the first year in the dataset</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>initial_year <span class="op">=</span> unique_years[<span class="dv">0</span>]</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>initial_df <span class="op">=</span> max_treecanopy_df[max_treecanopy_df[<span class="st">'year'</span>] <span class="op">==</span> initial_year]</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.scatter_mapbox(</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    initial_df,</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    lat<span class="op">=</span><span class="st">"lat"</span>,</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    lon<span class="op">=</span><span class="st">"long"</span>,</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>    hover_name<span class="op">=</span><span class="st">"year"</span>,</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>    hover_data<span class="op">=</span>[<span class="st">"treecanopy"</span>, <span class="st">"RCP"</span>, <span class="st">"scenario"</span>],</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"treecanopy"</span>,</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>    color_continuous_scale<span class="op">=</span>[[<span class="dv">0</span>, <span class="st">'white'</span>], [<span class="dv">1</span>, <span class="st">'red'</span>]],</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>    size<span class="op">=</span><span class="st">"treecanopy"</span>,</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>    size_max<span class="op">=</span><span class="dv">15</span>,</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>    zoom<span class="op">=</span><span class="dv">11</span>,</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>    mapbox_style<span class="op">=</span><span class="st">"carto-positron"</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Update layout for better visibility and add the dropdown menu</span></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>fig.update_layout(</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Tree Canopy for"</span>,</span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>    coloraxis_colorbar<span class="op">=</span><span class="bu">dict</span>(</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span><span class="st">"Tree Canopy Percentage"</span>,</span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>    updatemenus<span class="op">=</span>[<span class="bu">dict</span>(</span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>        buttons<span class="op">=</span>buttons,</span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>        direction<span class="op">=</span><span class="st">'down'</span>,</span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>        showactive<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span><span class="fl">0.18</span>,</span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>        xanchor<span class="op">=</span><span class="st">'left'</span>,</span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span><span class="fl">1.2</span>,</span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>        yanchor<span class="op">=</span><span class="st">'top'</span></span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>    )]</span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the figure as an HTML file</span></span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>fig.write_html(<span class="st">"tree_canopy_map.html"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<iframe src="./tree_canopy_map.html" width="120%" height="600px">
+</iframe>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Line chart for tree canopy coverage over time</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.line(filtered_df, x<span class="op">=</span><span class="st">'year'</span>, y<span class="op">=</span><span class="st">'treecanopy'</span>, color<span class="op">=</span><span class="st">'scenario'</span>, title<span class="op">=</span><span class="st">'Tree Canopy Coverage Over Time'</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>fig.write_html(<span class="st">"tree_canopy_over_time.html"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>merged_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">long</th>
+<th data-quarto-table-cell-role="th">lat</th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">TimePeriod</th>
+<th data-quarto-table-cell-role="th">RCP</th>
+<th data-quarto-table-cell-role="th">scenario</th>
+<th data-quarto-table-cell-role="th">treecanopy</th>
+<th data-quarto-table-cell-role="th">Ann_Herb</th>
+<th data-quarto-table-cell-role="th">Bare</th>
+<th data-quarto-table-cell-role="th">Herb</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">PPT_Annual</th>
+<th data-quarto-table-cell-role="th">T_Winter</th>
+<th data-quarto-table-cell-role="th">T_Summer</th>
+<th data-quarto-table-cell-role="th">T_Annual</th>
+<th data-quarto-table-cell-role="th">Tmax_Summer</th>
+<th data-quarto-table-cell-role="th">Tmin_Winter</th>
+<th data-quarto-table-cell-role="th">VWC_Winter_whole</th>
+<th data-quarto-table-cell-role="th">VWC_Spring_whole</th>
+<th data-quarto-table-cell-role="th">VWC_Summer_whole</th>
+<th data-quarto-table-cell-role="th">VWC_Fall_whole</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>-110.0472</td>
+<td>37.60413</td>
+<td>1980</td>
+<td>Hist</td>
+<td>historical</td>
+<td>sc1</td>
+<td>0</td>
+<td>0</td>
+<td>84</td>
+<td>5</td>
+<td>...</td>
+<td>13.79</td>
+<td>0.964835</td>
+<td>23.15924</td>
+<td>23.159240</td>
+<td>37.05</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>-110.0472</td>
+<td>37.60413</td>
+<td>1980</td>
+<td>Hist</td>
+<td>historical</td>
+<td>sc1</td>
+<td>0</td>
+<td>0</td>
+<td>84</td>
+<td>5</td>
+<td>...</td>
+<td>2.69</td>
+<td>0.964835</td>
+<td>23.15924</td>
+<td>0.964835</td>
+<td>37.05</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>-110.0472</td>
+<td>37.60413</td>
+<td>1980</td>
+<td>Hist</td>
+<td>historical</td>
+<td>sc1</td>
+<td>0</td>
+<td>0</td>
+<td>84</td>
+<td>5</td>
+<td>...</td>
+<td>13.79</td>
+<td>0.964835</td>
+<td>23.15924</td>
+<td>0.964835</td>
+<td>37.05</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>-110.0472</td>
+<td>37.60413</td>
+<td>1980</td>
+<td>Hist</td>
+<td>historical</td>
+<td>sc1</td>
+<td>0</td>
+<td>0</td>
+<td>84</td>
+<td>5</td>
+<td>...</td>
+<td>2.69</td>
+<td>0.964835</td>
+<td>23.15924</td>
+<td>23.159240</td>
+<td>37.05</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>-110.0472</td>
+<td>37.60413</td>
+<td>1980</td>
+<td>Hist</td>
+<td>historical</td>
+<td>sc1</td>
+<td>0</td>
+<td>0</td>
+<td>84</td>
+<td>5</td>
+<td>...</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>-12.45</td>
+<td>0.113447</td>
+<td>0.096831</td>
+<td>0.041876</td>
+<td>0.052298</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">69618</td>
+<td>-109.9659</td>
+<td>37.62525</td>
+<td>2024</td>
+<td>NT</td>
+<td>8.5</td>
+<td>sc57</td>
+<td>18</td>
+<td>0</td>
+<td>37</td>
+<td>18</td>
+<td>...</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>-12.16</td>
+<td>0.142255</td>
+<td>0.173792</td>
+<td>0.091433</td>
+<td>0.106907</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">69619</td>
+<td>-109.9659</td>
+<td>37.62525</td>
+<td>2024</td>
+<td>NT</td>
+<td>8.5</td>
+<td>sc58</td>
+<td>18</td>
+<td>0</td>
+<td>37</td>
+<td>18</td>
+<td>...</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>-12.16</td>
+<td>0.166254</td>
+<td>0.158146</td>
+<td>0.086355</td>
+<td>0.095905</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">69620</td>
+<td>-109.9659</td>
+<td>37.62525</td>
+<td>2024</td>
+<td>NT</td>
+<td>8.5</td>
+<td>sc59</td>
+<td>18</td>
+<td>0</td>
+<td>37</td>
+<td>18</td>
+<td>...</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>-10.38</td>
+<td>0.151342</td>
+<td>0.175814</td>
+<td>0.091992</td>
+<td>0.109333</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">69621</td>
+<td>-109.9659</td>
+<td>37.62525</td>
+<td>2024</td>
+<td>NT</td>
+<td>8.5</td>
+<td>sc60</td>
+<td>18</td>
+<td>0</td>
+<td>37</td>
+<td>18</td>
+<td>...</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>-10.61</td>
+<td>0.122249</td>
+<td>0.104884</td>
+<td>0.087115</td>
+<td>0.118908</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">69622</td>
+<td>-109.9659</td>
+<td>37.62525</td>
+<td>2024</td>
+<td>NT</td>
+<td>8.5</td>
+<td>sc61</td>
+<td>18</td>
+<td>0</td>
+<td>37</td>
+<td>18</td>
+<td>...</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>-7.56</td>
+<td>0.139110</td>
+<td>0.116699</td>
+<td>0.084664</td>
+<td>0.111973</td>
+</tr>
+</tbody>
+</table>
+
+<p>69623 rows × 29 columns</p>
+</div>
+</div>
+</div>
 
 
 
