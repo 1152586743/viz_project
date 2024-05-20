@@ -545,29 +545,24 @@ div.csl-indent {
 <div class="cell" data-execution_count="4">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># List of columns to take the maximum value</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>max_columns <span class="op">=</span> [<span class="st">'treecanopy'</span>, <span class="st">'Ann_Herb'</span>, <span class="st">'Bare'</span>, <span class="st">'Herb'</span>, <span class="st">'Litter'</span>, <span class="st">'Shrub'</span>]</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># List of columns to take the average, excluding max_columns and group by columns</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>group_by_columns <span class="op">=</span> [<span class="st">'long'</span>, <span class="st">'lat'</span>, <span class="st">'year'</span>, <span class="st">'TimePeriod'</span>, <span class="st">'RCP'</span>, <span class="st">'scenario'</span>]</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>avg_columns <span class="op">=</span> [col <span class="cf">for</span> col <span class="kw">in</span> merged_df.columns <span class="cf">if</span> col <span class="kw">not</span> <span class="kw">in</span> max_columns <span class="op">+</span> group_by_columns]</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom aggregation function to ignore zeros and NaNs for average</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> custom_avg(series):</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> series[series <span class="op">!=</span> <span class="dv">0</span>].mean()</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by the specified columns and apply aggregation</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>aggregated_df <span class="op">=</span> merged_df.groupby(group_by_columns).agg(</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    {<span class="op">**</span>{col: <span class="st">'max'</span> <span class="cf">for</span> col <span class="kw">in</span> max_columns},</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>     <span class="op">**</span>{col: custom_avg <span class="cf">for</span> col <span class="kw">in</span> avg_columns}}</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>).reset_index()</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>aggregated_df.drop(columns<span class="op">=</span>[<span class="st">'DrySoilDays_Summer_whole'</span>, <span class="st">'PPT_Annual'</span>, <span class="st">'T_Annual'</span>], inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Fill missing values for specific columns with their column mean</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>aggregated_df[<span class="st">'ExtremeShortTermDryStress_Summer_whole'</span>].fillna(aggregated_df[<span class="st">'ExtremeShortTermDryStress_Summer_whole'</span>].mean(), inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>aggregated_df[<span class="st">'NonDrySWA_Summer_whole'</span>].fillna(aggregated_df[<span class="st">'NonDrySWA_Summer_whole'</span>].mean(), inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>aggregated_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>max_columns <span class="op">=</span> [<span class="st">'treecanopy'</span>, <span class="st">'Ann_Herb'</span>, <span class="st">'Bare'</span>, <span class="st">'Herb'</span>, <span class="st">'Litter'</span>, <span class="st">'Shrub'</span>]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>group_by_columns <span class="op">=</span> [<span class="st">'long'</span>, <span class="st">'lat'</span>, <span class="st">'year'</span>, <span class="st">'TimePeriod'</span>, <span class="st">'RCP'</span>, <span class="st">'scenario'</span>]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>avg_columns <span class="op">=</span> [col <span class="cf">for</span> col <span class="kw">in</span> merged_df.columns <span class="cf">if</span> col <span class="kw">not</span> <span class="kw">in</span> max_columns <span class="op">+</span> group_by_columns]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> custom_avg(series):</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> series[series <span class="op">!=</span> <span class="dv">0</span>].mean()</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>aggregated_df <span class="op">=</span> merged_df.groupby(group_by_columns).agg(</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    {<span class="op">**</span>{col: <span class="st">'max'</span> <span class="cf">for</span> col <span class="kw">in</span> max_columns},</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>     <span class="op">**</span>{col: custom_avg <span class="cf">for</span> col <span class="kw">in</span> avg_columns}}</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>).reset_index()</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>aggregated_df.drop(columns<span class="op">=</span>[<span class="st">'DrySoilDays_Summer_whole'</span>, <span class="st">'PPT_Annual'</span>, <span class="st">'T_Annual'</span>], inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>aggregated_df[<span class="st">'ExtremeShortTermDryStress_Summer_whole'</span>].fillna(aggregated_df[<span class="st">'ExtremeShortTermDryStress_Summer_whole'</span>].mean(), inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>aggregated_df[<span class="st">'NonDrySWA_Summer_whole'</span>].fillna(aggregated_df[<span class="st">'NonDrySWA_Summer_whole'</span>].mean(), inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>aggregated_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <div>
@@ -884,30 +879,28 @@ div.csl-indent {
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="op">=</span> aggregated_df</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>avg_temp <span class="op">=</span> filtered_df.groupby([<span class="st">'year'</span>, <span class="st">'RCP'</span>])[[<span class="st">'T_Summer'</span>, <span class="st">'T_Winter'</span>]].mean().reset_index()</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create interactive line chart for summer temperatures</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>fig_summer_temp <span class="op">=</span> px.line(</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    avg_temp,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'T_Summer'</span>,</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'T_Summer'</span>: <span class="st">'Summer Temperature (°C)'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Summer Temperature Trends'</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>fig_summer_temp.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Create interactive line chart for winter temperatures</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>fig_winter_temp <span class="op">=</span> px.line(</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    avg_temp,</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'T_Winter'</span>,</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'T_Winter'</span>: <span class="st">'Winter Temperature (°C)'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Winter Temperature Trends'</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>fig_winter_temp.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>fig_winter_temp.write_html(<span class="st">"fig_winter_temp.html"</span>)</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>fig_summer_temp.write_html(<span class="st">"fig_summer_temp.html"</span>)</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>fig_summer_temp <span class="op">=</span> px.line(</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    avg_temp,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'T_Summer'</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'T_Summer'</span>: <span class="st">'Summer Temperature (°C)'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Summer Temperature Trends'</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>fig_summer_temp.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>fig_winter_temp <span class="op">=</span> px.line(</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    avg_temp,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'T_Winter'</span>,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'T_Winter'</span>: <span class="st">'Winter Temperature (°C)'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Winter Temperature Trends'</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>fig_winter_temp.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>fig_winter_temp.write_html(<span class="st">"fig_winter_temp.html"</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>fig_summer_temp.write_html(<span class="st">"fig_summer_temp.html"</span>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <iframe src="./fig_winter_temp.html" width="120%" height="600px">
@@ -924,33 +917,30 @@ div.csl-indent {
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="op">=</span> aggregated_df</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>avg_precipitation <span class="op">=</span> filtered_df.groupby([<span class="st">'year'</span>, <span class="st">'RCP'</span>])[[<span class="st">'PPT_Summer'</span>, <span class="st">'PPT_Winter'</span>]].mean().reset_index()</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create interactive bar chart for summer precipitation</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>fig_summer_ppt <span class="op">=</span> px.bar(</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    avg_precipitation,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'PPT_Summer'</span>,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    barmode<span class="op">=</span><span class="st">'group'</span>,</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'PPT_Summer'</span>: <span class="st">'Average Summer Precipitation (cm)'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Summer Precipitation'</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>fig_summer_ppt.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Create interactive bar chart for winter precipitation</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>fig_winter_ppt <span class="op">=</span> px.bar(</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    avg_precipitation,</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'PPT_Winter'</span>,</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    barmode<span class="op">=</span><span class="st">'group'</span>,</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'PPT_Winter'</span>: <span class="st">'Average Winter Precipitation (cm)'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Winter Precipitation'</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>fig_winter_ppt.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the figures as HTML files</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>fig_summer_ppt.write_html(<span class="st">"fig_summer_ppt.html"</span>)</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>fig_winter_ppt.write_html(<span class="st">"fig_winter_ppt.html"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>fig_summer_ppt <span class="op">=</span> px.bar(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    avg_precipitation,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'PPT_Summer'</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    barmode<span class="op">=</span><span class="st">'group'</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'PPT_Summer'</span>: <span class="st">'Average Summer Precipitation (cm)'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Summer Precipitation'</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>fig_summer_ppt.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>fig_winter_ppt <span class="op">=</span> px.bar(</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    avg_precipitation,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'PPT_Winter'</span>,</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    barmode<span class="op">=</span><span class="st">'group'</span>,</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'PPT_Winter'</span>: <span class="st">'Average Winter Precipitation (cm)'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Winter Precipitation'</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>fig_winter_ppt.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>fig_summer_ppt.write_html(<span class="st">"fig_summer_ppt.html"</span>)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>fig_winter_ppt.write_html(<span class="st">"fig_winter_ppt.html"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <iframe src="./fig_winter_ppt.html" width="120%" height="600px">
@@ -964,56 +954,53 @@ div.csl-indent {
 <div class="cell" data-execution_count="55">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by year and RCP, and calculate average volumetric water content</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>avg_soil_moisture <span class="op">=</span> aggregated_df.groupby([<span class="st">'year'</span>, <span class="st">'RCP'</span>])[[<span class="st">'VWC_Winter_whole'</span>, <span class="st">'VWC_Spring_whole'</span>, <span class="st">'VWC_Summer_whole'</span>, <span class="st">'VWC_Fall_whole'</span>]].mean().reset_index()</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create interactive line charts for soil moisture in different seasons</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_winter <span class="op">=</span> px.line(</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    avg_soil_moisture,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'VWC_Winter_whole'</span>,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'VWC_Winter_whole'</span>: <span class="st">'Winter Volumetric Water Content (m³/m³)'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Winter Soil Moisture'</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_winter.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_spring <span class="op">=</span> px.line(</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    avg_soil_moisture,</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'VWC_Spring_whole'</span>,</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'VWC_Spring_whole'</span>: <span class="st">'Spring Volumetric Water Content (m³/m³)'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Spring Soil Moisture'</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_spring.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_summer <span class="op">=</span> px.line(</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    avg_soil_moisture,</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'VWC_Summer_whole'</span>,</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'VWC_Summer_whole'</span>: <span class="st">'Summer Volumetric Water Content (m³/m³)'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Summer Soil Moisture'</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_summer.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_fall <span class="op">=</span> px.line(</span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    avg_soil_moisture,</span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'VWC_Fall_whole'</span>,</span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'VWC_Fall_whole'</span>: <span class="st">'Fall Volumetric Water Content (m³/m³)'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Fall Soil Moisture'</span></span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_fall.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the figures as HTML files</span></span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_winter.write_html(<span class="st">"fig_soil_moisture_winter.html"</span>)</span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_spring.write_html(<span class="st">"fig_soil_moisture_spring.html"</span>)</span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_summer.write_html(<span class="st">"fig_soil_moisture_summer.html"</span>)</span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_fall.write_html(<span class="st">"fig_soil_moisture_fall.html"</span>)</span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>avg_soil_moisture <span class="op">=</span> aggregated_df.groupby([<span class="st">'year'</span>, <span class="st">'RCP'</span>])[[<span class="st">'VWC_Winter_whole'</span>, <span class="st">'VWC_Spring_whole'</span>, <span class="st">'VWC_Summer_whole'</span>, <span class="st">'VWC_Fall_whole'</span>]].mean().reset_index()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_winter <span class="op">=</span> px.line(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    avg_soil_moisture,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'VWC_Winter_whole'</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'VWC_Winter_whole'</span>: <span class="st">'Winter Volumetric Water Content (m³/m³)'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Winter Soil Moisture'</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_winter.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_spring <span class="op">=</span> px.line(</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    avg_soil_moisture,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'VWC_Spring_whole'</span>,</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'VWC_Spring_whole'</span>: <span class="st">'Spring Volumetric Water Content (m³/m³)'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Spring Soil Moisture'</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_spring.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_summer <span class="op">=</span> px.line(</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    avg_soil_moisture,</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'VWC_Summer_whole'</span>,</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'VWC_Summer_whole'</span>: <span class="st">'Summer Volumetric Water Content (m³/m³)'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Summer Soil Moisture'</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_summer.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_fall <span class="op">=</span> px.line(</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    avg_soil_moisture,</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'VWC_Fall_whole'</span>,</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'VWC_Fall_whole'</span>: <span class="st">'Fall Volumetric Water Content (m³/m³)'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Fall Soil Moisture'</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_fall.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_winter.write_html(<span class="st">"fig_soil_moisture_winter.html"</span>)</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_spring.write_html(<span class="st">"fig_soil_moisture_spring.html"</span>)</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_summer.write_html(<span class="st">"fig_soil_moisture_summer.html"</span>)</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>fig_soil_moisture_fall.write_html(<span class="st">"fig_soil_moisture_fall.html"</span>)</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <iframe src="./fig_soil_moisture_winter.html" width="120%" height="600px">
@@ -1031,35 +1018,31 @@ div.csl-indent {
 <div class="cell" data-execution_count="54">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by year and RCP, and calculate average extreme weather events</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>avg_extreme_weather <span class="op">=</span> aggregated_df.groupby([<span class="st">'year'</span>, <span class="st">'RCP'</span>])[[<span class="st">'FrostDays_Winter'</span>, <span class="st">'ExtremeShortTermDryStress_Summer_whole'</span>]].mean().reset_index()</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create interactive bar chart for winter frost days</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>fig_frost_days <span class="op">=</span> px.bar(</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    avg_extreme_weather,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'FrostDays_Winter'</span>,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    barmode<span class="op">=</span><span class="st">'group'</span>,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'FrostDays_Winter'</span>: <span class="st">'Number of Frost Days'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Winter Frost Days'</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>fig_frost_days.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Create interactive bar chart for summer extreme short-term dry stress</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>fig_dry_stress <span class="op">=</span> px.bar(</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    avg_extreme_weather,</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'ExtremeShortTermDryStress_Summer_whole'</span>,</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    barmode<span class="op">=</span><span class="st">'group'</span>,</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'ExtremeShortTermDryStress_Summer_whole'</span>: <span class="st">'Extreme Short-Term Dry Stress (°C)'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Extreme Short-Term Dry Stress'</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>fig_dry_stress.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the figures as HTML files</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>fig_frost_days.write_html(<span class="st">"fig_frost_days.html"</span>)</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>fig_dry_stress.write_html(<span class="st">"fig_dry_stress.html"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>avg_extreme_weather <span class="op">=</span> aggregated_df.groupby([<span class="st">'year'</span>, <span class="st">'RCP'</span>])[[<span class="st">'FrostDays_Winter'</span>, <span class="st">'ExtremeShortTermDryStress_Summer_whole'</span>]].mean().reset_index()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>fig_frost_days <span class="op">=</span> px.bar(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    avg_extreme_weather,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'FrostDays_Winter'</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    barmode<span class="op">=</span><span class="st">'group'</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'FrostDays_Winter'</span>: <span class="st">'Number of Frost Days'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Winter Frost Days'</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>fig_frost_days.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>fig_dry_stress <span class="op">=</span> px.bar(</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    avg_extreme_weather,</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'ExtremeShortTermDryStress_Summer_whole'</span>,</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'RCP'</span>,</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    barmode<span class="op">=</span><span class="st">'group'</span>,</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'ExtremeShortTermDryStress_Summer_whole'</span>: <span class="st">'Extreme Short-Term Dry Stress (°C)'</span>, <span class="st">'year'</span>: <span class="st">'Year'</span>, <span class="st">'RCP'</span>: <span class="st">'Scenario'</span>},</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Historical vs. Projected Extreme Short-Term Dry Stress'</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>fig_dry_stress.update_layout(legend_title_text<span class="op">=</span><span class="st">'RCP'</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>fig_frost_days.write_html(<span class="st">"fig_frost_days.html"</span>)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>fig_dry_stress.write_html(<span class="st">"fig_dry_stress.html"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <iframe src="./fig_frost_days.html" width="120%" height="600px">
@@ -1077,68 +1060,61 @@ div.csl-indent {
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.graph_objects <span class="im">as</span> go</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming 'aggregated_df' is the DataFrame that you have processed</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter the DataFrame for the year 2024</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>df_2024 <span class="op">=</span> aggregated_df[aggregated_df[<span class="st">'year'</span>] <span class="op">==</span> <span class="dv">2024</span>]</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># List of features to include in the dropdown menu</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>features <span class="op">=</span> [<span class="st">'VWC_Winter_whole'</span>, <span class="st">'VWC_Spring_whole'</span>, <span class="st">'VWC_Summer_whole'</span>, <span class="st">'VWC_Fall_whole'</span>, </span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">'FrostDays_Winter'</span>, <span class="st">'ExtremeShortTermDryStress_Summer_whole'</span>]</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the initial scatter map plot for the first feature in the list</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>initial_feature <span class="op">=</span> features[<span class="dv">0</span>]</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.scatter_mapbox(</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    df_2024,</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    lat<span class="op">=</span><span class="st">"lat"</span>,</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    lon<span class="op">=</span><span class="st">"long"</span>,</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    hover_name<span class="op">=</span><span class="st">"year"</span>,</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    hover_data<span class="op">=</span>{initial_feature: <span class="va">True</span>, <span class="st">'RCP'</span>: <span class="va">True</span>},</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span>initial_feature,</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    color_continuous_scale<span class="op">=</span>[[<span class="dv">0</span>, <span class="st">'white'</span>], [<span class="dv">1</span>, <span class="st">'red'</span>]],</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    size_max<span class="op">=</span><span class="dv">15</span>,</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    zoom <span class="op">=</span> <span class="dv">11</span>,</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    mapbox_style<span class="op">=</span><span class="st">"carto-positron"</span></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Create dropdown menu buttons for each feature</span></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>buttons <span class="op">=</span> []</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> feature <span class="kw">in</span> features:</span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    buttons.append(</span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>        <span class="bu">dict</span>(</span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>            method<span class="op">=</span><span class="st">'update'</span>,</span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>            label<span class="op">=</span>feature,</span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>            args<span class="op">=</span>[</span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>                {</span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'marker.color'</span>: [df_2024[feature]],</span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'hovertemplate'</span>: <span class="ss">f'&lt;b&gt;2024&lt;/b&gt;&lt;br&gt;lat=%</span><span class="ch">{{</span><span class="ss">lat</span><span class="ch">}}</span><span class="ss">&lt;br&gt;long=%</span><span class="ch">{{</span><span class="ss">lon</span><span class="ch">}}</span><span class="ss">&lt;br&gt;RCP=%</span><span class="ch">{{</span><span class="ss">customdata[1]</span><span class="ch">}}</span><span class="ss">&lt;br&gt;</span><span class="sc">{</span>feature<span class="sc">}</span><span class="ss">=%</span><span class="ch">{{</span><span class="ss">marker.color</span><span class="ch">}}</span><span class="ss">&lt;extra&gt;&lt;/extra&gt;'</span>,</span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>                }</span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>            ]</span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Update layout for better visibility and add the dropdown menu</span></span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>fig.update_layout(</span>
-<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Climate Impact Features for 2024"</span>,</span>
-<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>    coloraxis_colorbar<span class="op">=</span><span class="bu">dict</span>(</span>
-<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span><span class="st">"Feature Value"</span>,</span>
-<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>    updatemenus<span class="op">=</span>[<span class="bu">dict</span>(</span>
-<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>        buttons<span class="op">=</span>buttons,</span>
-<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>        direction<span class="op">=</span><span class="st">'down'</span>,</span>
-<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>        showactive<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span><span class="fl">0.4</span>,</span>
-<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>        xanchor<span class="op">=</span><span class="st">'left'</span>,</span>
-<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span><span class="fl">1.2</span>,</span>
-<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>        yanchor<span class="op">=</span><span class="st">'top'</span></span>
-<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>    )]</span>
-<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the figure as an HTML file</span></span>
-<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>fig.write_html(<span class="st">"climate_impact_features_map.html"</span>)</span>
-<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>df_2024 <span class="op">=</span> aggregated_df[aggregated_df[<span class="st">'year'</span>] <span class="op">==</span> <span class="dv">2024</span>]</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>features <span class="op">=</span> [<span class="st">'VWC_Winter_whole'</span>, <span class="st">'VWC_Spring_whole'</span>, <span class="st">'VWC_Summer_whole'</span>, <span class="st">'VWC_Fall_whole'</span>, </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">'FrostDays_Winter'</span>, <span class="st">'ExtremeShortTermDryStress_Summer_whole'</span>]</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>initial_feature <span class="op">=</span> features[<span class="dv">0</span>]</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.scatter_mapbox(</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    df_2024,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    lat<span class="op">=</span><span class="st">"lat"</span>,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    lon<span class="op">=</span><span class="st">"long"</span>,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    hover_name<span class="op">=</span><span class="st">"year"</span>,</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    hover_data<span class="op">=</span>{initial_feature: <span class="va">True</span>, <span class="st">'RCP'</span>: <span class="va">True</span>},</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span>initial_feature,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    color_continuous_scale<span class="op">=</span>[[<span class="dv">0</span>, <span class="st">'white'</span>], [<span class="dv">1</span>, <span class="st">'red'</span>]],</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    size_max<span class="op">=</span><span class="dv">15</span>,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    zoom <span class="op">=</span> <span class="dv">11</span>,</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    mapbox_style<span class="op">=</span><span class="st">"carto-positron"</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>buttons <span class="op">=</span> []</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> feature <span class="kw">in</span> features:</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    buttons.append(</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>        <span class="bu">dict</span>(</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>            method<span class="op">=</span><span class="st">'update'</span>,</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>            label<span class="op">=</span>feature,</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>            args<span class="op">=</span>[</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>                {</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'marker.color'</span>: [df_2024[feature]],</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'hovertemplate'</span>: <span class="ss">f'&lt;b&gt;2024&lt;/b&gt;&lt;br&gt;lat=%</span><span class="ch">{{</span><span class="ss">lat</span><span class="ch">}}</span><span class="ss">&lt;br&gt;long=%</span><span class="ch">{{</span><span class="ss">lon</span><span class="ch">}}</span><span class="ss">&lt;br&gt;RCP=%</span><span class="ch">{{</span><span class="ss">customdata[1]</span><span class="ch">}}</span><span class="ss">&lt;br&gt;</span><span class="sc">{</span>feature<span class="sc">}</span><span class="ss">=%</span><span class="ch">{{</span><span class="ss">marker.color</span><span class="ch">}}</span><span class="ss">&lt;extra&gt;&lt;/extra&gt;'</span>,</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>                }</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>            ]</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>fig.update_layout(</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Climate Impact Features for 2024"</span>,</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    coloraxis_colorbar<span class="op">=</span><span class="bu">dict</span>(</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span><span class="st">"Feature Value"</span>,</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>    updatemenus<span class="op">=</span>[<span class="bu">dict</span>(</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>        buttons<span class="op">=</span>buttons,</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>        direction<span class="op">=</span><span class="st">'down'</span>,</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>        showactive<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span><span class="fl">0.4</span>,</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>        xanchor<span class="op">=</span><span class="st">'left'</span>,</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span><span class="fl">1.2</span>,</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>        yanchor<span class="op">=</span><span class="st">'top'</span></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>    )]</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>fig.write_html(<span class="st">"climate_impact_features_map.html"</span>)</span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <iframe src="./climate_impact_features_map.html" width="120%" height="600px">
